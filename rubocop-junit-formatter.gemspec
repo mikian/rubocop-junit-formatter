@@ -7,8 +7,8 @@ Gem::Specification.new do |spec|
   spec.version       = '0.1.0'
   spec.authors       = ["Mikko Kokkonen"]
   spec.email         = ["mikko@owlforestry.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = %q{Outputs RuboCop Offences as JUnit report}
+  spec.description   = %q{Allows neat integration with Atlassian Bamboo by listing all offences as failed JUnit testcase}
   spec.homepage      = ""
   spec.license       = "MIT"
 
