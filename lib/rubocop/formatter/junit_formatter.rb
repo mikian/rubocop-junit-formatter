@@ -17,9 +17,8 @@ module RuboCop
         return if offences.empty?
 
         offences.group_by(&:cop_name).each do |cop, cop_offences|
-          # require 'pry';binding.pry
           REXML::Element.new('testcase', @testsuite).tap do |f|
-            f.attributes['classname'] = file.gsub("#{Dir.pwd}/", '').gsub('/', '.')
+            f.attributes['classname'] = file.gsub(/\.rb\Z/, '').gsub("#{Dir.pwd}/", '').gsub('/', '.')
             f.attributes['name']      = cop
 
             cop_offences.each do |offence|

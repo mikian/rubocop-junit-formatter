@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = "rubocop-junit-formatter"
-  spec.version       = '0.1.0'
+  spec.version       = '0.1.1'
   spec.authors       = ["Mikko Kokkonen"]
   spec.email         = ["mikko@owlforestry.com"]
   spec.summary       = %q{Outputs RuboCop Offences as JUnit report}
