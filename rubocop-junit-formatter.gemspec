@@ -4,12 +4,12 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = "rubocop-junit-formatter"
-  spec.version       = '0.1.1'
+  spec.version       = '0.1.2'
   spec.authors       = ["Mikko Kokkonen"]
   spec.email         = ["mikko@owlforestry.com"]
   spec.summary       = %q{Outputs RuboCop Offences as JUnit report}
   spec.description   = %q{Allows neat integration with Atlassian Bamboo by listing all offences as failed JUnit testcase}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/mikian/rubocop-junit-formatter"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
