@@ -6,7 +6,7 @@ Gem::Specification.new do |spec|
   spec.name          = "rubocop-junit-formatter"
   spec.version       = '0.1.2'
   spec.authors       = ["Mikko Kokkonen"]
-  spec.email         = ["mikko@owlforestry.com"]
+  spec.email         = ["mikko@mikian.com"]
   spec.summary       = %q{Outputs RuboCop Offences as JUnit report}
   spec.description   = %q{Allows neat integration with Atlassian Bamboo by listing all offences as failed JUnit testcase}
   spec.homepage      = "https://github.com/mikian/rubocop-junit-formatter"
