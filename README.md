@@ -1,6 +1,21 @@
 # Rubocop::Junit::Formatter
 
-TODO: Write a gem description
+Provides JUnit formatting for Rubocop. Usable with Conitues integration services and IDEs.
+
+## Usage
+
+In order to have the formatter available incide CLI utility, you need to require it first.
+
+Example for CI, that provides `$REPORTS_DIR` environment variable for collecting JUnit reports
+
+```bash
+bundle exec rubocop \\
+  -r $(bundle show rubocop-junit-formatter)/lib/rubocop/formatter/junit_formatter.rb \\
+  --format RuboCop::Formatter::JUnitFormatter --out $REPORTS_DIR/rubocop.xml
+```
+
+Important options are `-r` (require class) and `--format`. Option `--out` should go after appropriate `--format`.
+And you can have multiple formats if you like.
 
 ## Installation
 
@@ -17,10 +32,6 @@ And then execute:
 Or install it yourself as:
 
     $ gem install rubocop-junit-formatter
-
-## Usage
-
-TODO: Write usage instructions here
 
 ## Contributing
 
