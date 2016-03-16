@@ -16,6 +16,8 @@ module RuboCop
         @testsuite = REXML::Element.new('testsuite', @testsuites).tap do |el|
           el.add_attributes('name' => 'rubocop')
         end
+        # Create one empty testcase to avoid jenkins failure on empty results
+        REXML::Element.new('testcase', @testsuite)
       end
 
       def file_finished(file, offences)
