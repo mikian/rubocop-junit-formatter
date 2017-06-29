@@ -1,10 +1,10 @@
 # Rubocop::Junit::Formatter
 
-Provides JUnit formatting for Rubocop. Usable with Conitues integration services and IDEs.
+Provides JUnit formatting for Rubocop. Usable with Continuous integration services and IDEs.
 
 ## Usage
 
-In order to have the formatter available incide CLI utility, you need to require it first.
+In order to have the formatter available inside CLI utility, you need to require it first.
 
 Example for CI, that provides `$REPORTS_DIR` environment variable for collecting JUnit reports
 
