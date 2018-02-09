@@ -16,6 +16,8 @@ module RuboCop
           el.add_attributes('name' => 'rubocop')
           el.add_attributes('timestamp' => Time.now.getutc)
         end
+        # Create one empty testcase to avoid jenkins failure on empty results
+        REXML::Element.new('testcase', @testsuite)
       end
 
       def file_finished(file, offences)
