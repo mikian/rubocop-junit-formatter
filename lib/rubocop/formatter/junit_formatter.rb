@@ -8,6 +8,10 @@ module RuboCop
       # This gives all cops - we really want all _enabled_ cops, but
       # that is difficult to obtain - no access to config object here.
       COPS = Cop::Cop.all
+      $cop_count = COPS.length
+      $suitetests = Hash.new do |h, k|
+        h[k] = Hash.new(0)
+      end
 
       def started(_target_file)
         @document = REXML::Document.new.tap do |d|
@@ -18,44 +22,53 @@ module RuboCop
           el.add_attributes('name' => 'rubocop')
           el.add_attributes('timestamp' => Time.now.getutc)
         end
-        # Create one empty testcase to avoid jenkins failure on empty results
-        REXML::Element.new('testcase', @testsuite)
+        $suitetests[:suite][:cops_offended] # global total offended cops
+        $suitetests[:suite][:rules_broken] # global total rules broken
       end
 
       def file_finished(file, offences)
+        classname = file.gsub(/\.rb\Z/, '').gsub("#{Dir.pwd}/", '').tr('/', '.')
         # One test case per offense per cop per file
-        test_count = COPS.length
-        failure_count = 0
-        offences.group_by(&:cop_name).each do |cop_name, offences_for_cop|
+        offences.group_by(&:cop_name).each do |cop_name, rules_broken|
           REXML::Element.new('testcase', @testsuite).tap do |f|
-            f.attributes['classname'] = file.gsub(/\.rb\Z/, '').gsub("#{Dir.pwd}/", '').tr('/', '.')
+            f.attributes['classname'] = classname
             f.attributes['name']      = cop_name
-
+            # How many Cops does this file break, tallied per suite, cop, and file?
+            $suitetests[:suite][:cops_offended] += 1
+            $suitetests[cop_name][:offenses] += 1
+            $suitetests[classname][:cops_offended] += 1
+            # How many Rules does this file break, tallied per suite, cop, and file?
+            $suitetests[:suite][:rules_broken] += rules_broken.length
+            $suitetests[cop_name][:rules_broken] += rules_broken.length
+            $suitetests[classname][:rules_broken] += rules_broken.length
             # One failure per offence.  Zero failures is a passing test case,
             # for most surefire/nUnit parsers.
-            offences_for_cop.each do |offence_for_cop|
+            rules_broken.each do |rule_broken|
               REXML::Element.new('failure', f).tap do |e|
                 e.attributes['type'] = cop_name
-                e.attributes['message'] = offence_for_cop.message
-                e.add_text offence_for_cop.location.to_s
+                e.attributes['message'] = rule_broken.message
+                e.add_text rule_broken.location.to_s
               end
-              failure_count += 1
             end
+            f.add_attributes('failures' => $suitetests[classname][:rules_broken])
           end
         end
-        @testsuite.tap do |el|
-          el.add_attributes('tests' => test_count)
-          el.add_attributes('failures' => failure_count)
-        end
-
-        if failure_count == 0
-          REXML::Element.new('testcase', @testsuite).tap do |s|
-            s.add_attributes('name' => 'There were 0 offences. All tests passed.')
-          end
+        $suitetests[classname][:tests] += $cop_count
+        $suitetests[:suite][:tests] += $cop_count
+        # Per File Report
+        REXML::Element.new('testcase', @testsuite).tap do |s|
+          s.attributes['classname'] = classname
+          s.add_attributes('name' => "#{$suitetests[classname][:failures] == 0 ? 'Success' : 'Cop Failures'}: #{classname}")
+          s.add_attributes('tests' => $suitetests[classname][:tests])
+          s.add_attributes('failures' => $suitetests[classname][:cops_offended])
         end
       end
 
       def finished(_inspected_files)
+        @testsuite.tap do |el|
+          el.add_attributes('tests' => $suitetests[:suite][:tests])
+          el.add_attributes('failures' => $suitetests[:suite][:cops_offended])
+        end
         @document.write(output, 2)
       end
     end
