@@ -1,7 +1,9 @@
 require 'rexml/document'
+require 'rubocop'
 
 module RuboCop
   module Formatter
+    # Inherit from Rubocop::Formatter::BaseFormatter
     class JUnitFormatter < BaseFormatter
       # This gives all cops - we really want all _enabled_ cops, but
       # that is difficult to obtain - no access to config object here.
