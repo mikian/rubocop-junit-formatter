@@ -22,9 +22,9 @@ module RuboCop
         # One test case per offense per cop per file
         test_count = COPS.length
         failure_count = 0
-        offences.group_by(&:cop_name).each do |cop_name, offences_for_cop)|
+        offences.group_by(&:cop_name).each do |cop_name, offences_for_cop|
           REXML::Element.new('testcase', @testsuite).tap do |f|
-            f.attributes['classname'] = file.gsub(/\.rb\Z/, '').gsub("#{Dir.pwd}/", '').gsub('/', '.')
+            f.attributes['classname'] = file.gsub(/\.rb\Z/, '').gsub("#{Dir.pwd}/", '').tr('/', '.')
             f.attributes['name']      = cop_name
 
             # One failure per offence.  Zero failures is a passing test case,
