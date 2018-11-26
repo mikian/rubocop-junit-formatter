@@ -1,5 +1,9 @@
 # Rubocop::Junit::Formatter
 
+**DEPRECATED**
+In favour of more clever ways to do code style nagging, use for example [Pronto](https://github.com/prontolabs/pronto)
+
+
 Provides JUnit formatting for Rubocop. Usable with Continuous integration services and IDEs.
 
 ## Usage
